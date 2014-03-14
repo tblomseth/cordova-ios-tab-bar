@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="com.mymee.cordova.plugins.native-controls"
+        version="1.0.0">
+
+    <name>Native Controls Plugin for Cordova iOS</name>
+    <description>This plugin allows your app access to native iOS UI controls from Cordova</description>
+    <license>MIT</license>
+    <keywords>native ui controls</keywords>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+
+    <!-- ios -->
+    <platform name="ios">
+
+        <js-module src="www/native-controls.js" name="NativeControls">
+            <clobbers target="window.plugins.NativeControls"/>
+        </js-module>
+
+        <config-file target="config.xml" parent="/widget">
+            <feature name="NativeControls">
+                <param name="ios-package" value="NativeControls"/>
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/NativeControls.h"/>
+        <source-file src="src/ios/NativeControls.m"/>
+
+    </platform>
+
+</plugin>

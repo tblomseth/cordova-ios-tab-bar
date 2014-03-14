@@ -135,7 +135,7 @@ NativeControls.prototype.getSelectedTabBarItem = function () {
  * @see showTabBarItems
  */
 NativeControls.prototype.selectTabBarItem = function ( tab ) {
-    exec( null, null, this.serviceName, "selectTabBarItem", [ parameters ] );
+    exec( null, null, this.serviceName, "selectTabBarItem", [ tab ] );
 };
 
 /**

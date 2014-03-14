@@ -32,7 +32,7 @@ function NativeControls() {
  * Create a native tab bar that can have tab buttons added to it which can respond to events.
  */
 NativeControls.prototype.createTabBar = function () {
-    exec( null, null, this.serviceName, "createTabBar", null );
+    exec( null, null, this.serviceName, "createTabBar", [] );
 };
 
 /**
@@ -43,7 +43,7 @@ NativeControls.prototype.createTabBar = function () {
  */
 NativeControls.prototype.showTabBar = function ( options ) {
     if ( !options ) options = {'position': 'bottom'};
-    exec( null, null, this.serviceName, "showTabBar", options );
+    exec( null, null, this.serviceName, "showTabBar", [ options ] );
 };
 
 /**
@@ -51,7 +51,7 @@ NativeControls.prototype.showTabBar = function ( options ) {
  */
 NativeControls.prototype.hideTabBar = function ( animate ) {
     if ( animate == undefined || animate == null ) animate = true;
-    exec( null, null, this.serviceName, "hideTabBar", { animate: animate } );
+    exec( null, null, this.serviceName, "hideTabBar", [ { animate: animate } ] );
 };
 
 /**
@@ -86,7 +86,6 @@ NativeControls.prototype.createTabBarItem = function ( name, label, image, optio
         this.tabBarCallbacks[tag] = {'onSelect': options.onSelect, 'name': name};
         //delete options.onSelect;
     }
-
     exec( null, null, this.serviceName, "createTabBarItem", [ name, label, image, tag, options ] );
 };
 
@@ -136,7 +135,7 @@ NativeControls.prototype.getSelectedTabBarItem = function () {
  * @see showTabBarItems
  */
 NativeControls.prototype.selectTabBarItem = function ( tab ) {
-    cordova.exec( "NativeControls.selectTabBarItem", tab );
+    exec( null, null, this.serviceName, "selectTabBarItem", [ parameters ] );
 };
 
 /**

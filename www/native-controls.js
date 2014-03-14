@@ -87,8 +87,7 @@ NativeControls.prototype.createTabBarItem = function ( name, label, image, optio
         //delete options.onSelect;
     }
 
-    cordova.exec( "NativeControls.", name, label, image, tag, options );
-    exec( null, null, this.serviceName, "createTabBarItem", null);
+    exec( null, null, this.serviceName, "createTabBarItem", [ name, label, image, tag, options ] );
 };
 
 /**
@@ -99,7 +98,8 @@ NativeControls.prototype.createTabBarItem = function ( name, label, image, optio
  */
 NativeControls.prototype.updateTabBarItem = function ( name, options ) {
     if ( !options ) options = {};
-    cordova.exec( "NativeControls.updateTabBarItem", name, options );
+    cordova.exec( "NativeControls.", name, options );
+    exec( null, null, this.serviceName, "updateTabBarItem", [ name, options ] );
 };
 
 /**
@@ -111,11 +111,11 @@ NativeControls.prototype.updateTabBarItem = function ( name, options ) {
  * @see createTabBar
  */
 NativeControls.prototype.showTabBarItems = function () {
-    var parameters = [ "NativeControls.showTabBarItems" ];
+    var parameters = [];
     for ( var i = 0; i < arguments.length; i++ ) {
         parameters.push( arguments[i] );
     }
-    cordova.exec.apply( this, parameters );
+    exec( null, null, this.serviceName, "showTabBarItems", [ parameters ] );
 };
 
 
@@ -154,14 +154,14 @@ NativeControls.prototype.tabBarItemSelected = function ( tag ) {
  * Create a toolbar.
  */
 NativeControls.prototype.createToolBar = function () {
-    cordova.exec( "NativeControls.createToolBar" );
+    exec( null, null, this.serviceName, "createToolBar", null );
 };
 /**
  * Function called when a tab bar item has been selected.
  * @param {String} title the title to set within the toolbar
  */
 NativeControls.prototype.setToolBarTitle = function ( title ) {
-    cordova.exec( "NativeControls.setToolBarTitle", title );
+    exec( null, null, this.serviceName, "setToolBarTitle", [ title ] );
 };
 /*
  * Added by Emile khattar: emile818@gmail.com emile@sign.al
@@ -171,14 +171,14 @@ NativeControls.prototype.setToolBarTitle = function ( title ) {
  * Set toolBarItems = nil;
  */
 NativeControls.prototype.resetToolBar = function () {
-    cordova.exec( "NativeControls.resetToolBar" );
+    exec( null, null, this.serviceName, "resetToolBar", null);
 };
 /**
  * Hide the tool bar
  * @brief hide the tool bar
  */
 NativeControls.prototype.hideToolBar = function () {
-    cordova.exec( "NativeControls.hideToolBar" );
+    exec( null, null, this.serviceName, "hideToolBar", null);
 };
 
 /**
@@ -186,7 +186,7 @@ NativeControls.prototype.hideToolBar = function () {
  * @brief Show the tool bar
  */
 NativeControls.prototype.showToolBar = function () {
-    cordova.exec( "NativeControls.showToolBar" );
+    exec( null, null, this.serviceName, "showToolBar", null);
 };
 
 
@@ -235,7 +235,7 @@ NativeControls.prototype.createToolBarItem = function ( name, title, image, opti
     }
     //modify the NativeControls.m to change the options quickly
     // the instance name on the plugin can be passed with option for now it is hardcode in objc // Emile
-    cordova.exec( "NativeControls.createToolBarItem", name, title, image, options );
+    exec( null, null, this.serviceName, "createToolBarItem", [ name, title, image, options ]);
 };
 
 /**
@@ -262,11 +262,11 @@ NativeControls.prototype.createActionSheet = function ( buttonTitles, actionShee
         options.destructiveButtonIndex = destructiveButtonIndex;
     }
 
-    var params = [ "NativeControls.createActionSheet", options ];
+    var params = [ options ];
     for ( var i = 0; i < buttonTitles.length; i++ ) {
         params.push( buttonTitles[i] );
     }
-    cordova.exec.apply( this, params );
+    exec( null, null, this.serviceName, "createActionSheet", params );
 
     this.actionSheetDelegate = {};
     return this.actionSheetDelegate;
@@ -279,11 +279,7 @@ NativeControls.prototype._onActionSheetDismissed = function ( index ) {
 
 
 NativeControls.prototype.setStatusBarVisibilty = function ( bHide ) {
-    cordova.exec( "StatusBar.setHidden", bHide );
+    exec( null, null, this.serviceName, "setHidden", [ bHide ] );
 }
 
-
-if ( !window.plugins )
-    window.plugins = {};
-
-window.plugins.nativeControls = new NativeControls();
+module.exports = NativeControls;

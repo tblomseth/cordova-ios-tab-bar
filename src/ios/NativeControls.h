@@ -14,23 +14,24 @@
 #import <UIKit/UIKit.h>
 #import <UIKit/UITabBar.h>
 #import <UIKit/UIToolbar.h>
-#ifdef CORDOVA_FRAMEWORK
 #import <Cordova/CDVPlugin.h>
-#else
-#import "CDVPlugin.h"
-#endif
 
 @interface NativeControls : CDVPlugin <UITabBarDelegate, UIActionSheetDelegate> {
 	UITabBar* tabBar;
 	NSMutableDictionary* tabBarItems;
-    
+  
 	UIToolbar* toolBar;
 	UIBarButtonItem* toolBarTitle;
 	NSMutableArray* toolBarItems;
-    
+  
 	CGRect	originalWebViewBounds;
 }
 
+#pragma mark - Properties
+
+@property (nonatomic, copy) NSString* callbackId;
+
+#pragma mark - Tab bar methods
 /* Tab Bar methods
  */
 - (void)createTabBar:(CDVInvokedUrlCommand*)command;
@@ -41,8 +42,7 @@
 - (void)updateTabBarItem:(CDVInvokedUrlCommand*)command;
 - (void)selectTabBarItem:(CDVInvokedUrlCommand*)command;
 
-
-
+#pragma mark - Tool bar methods
 /* Tool Bar methods
  */
 - (void)createToolBar:(CDVInvokedUrlCommand*)command;
@@ -51,9 +51,10 @@
 - (void)createToolBarItem:(CDVInvokedUrlCommand*)command;
 - (void)showToolBar:(CDVInvokedUrlCommand*)command;
 - (void)hideToolBar:(CDVInvokedUrlCommand*)command;
+
+#pragma mark - Action sheet methods
 /* ActionSheet
  */
 - (void)createActionSheet:(CDVInvokedUrlCommand*)command;
-
 
 @end

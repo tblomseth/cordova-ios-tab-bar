@@ -9,45 +9,46 @@
 //  Formerly -> PhoneGap :: UIControls.h
 //  Created by Michael Nachbaur on 13/04/09.
 //  Copyright 2009 Decaf Ninja Software. All rights reserved.
-
 #import "NativeControls.h"
-
 #import <QuartzCore/QuartzCore.h>
+
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
 @implementation NativeControls
 #ifndef __IPHONE_3_0
 @synthesize webView;
 #endif
 
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+@synthesize callbackId = _callbackId;
+
 /*
--(CDVPlugin*) initWithWebView:(UIWebView*)theWebView
-{
-  self = (NativeControls*)[super initWithWebView:theWebView];
-  if (self)
-	{
-    tabBarItems = [[NSMutableDictionary alloc] initWithCapacity:5];
-		originalWebViewBounds = theWebView.bounds;
-  }
-  return self;
-}
+ -(CDVPlugin*) initWithWebView:(UIWebView*)theWebView
+ {
+ self = (NativeControls*)[super initWithWebView:theWebView];
+ if (self)
+ {
+ tabBarItems = [[NSMutableDictionary alloc] initWithCapacity:5];
+ originalWebViewBounds = theWebView.bounds;
+ }
+ return self;
+ }
  */
 /*
-- (void)dealloc
-{
-  if (tabBar)
-    [tabBar release];
-	
-	if (toolBar)
-	{
-		[toolBarTitle release];
-		[toolBarItems release];
-		[toolBar release];
-	}
-	
-  [super dealloc];
-}
-*/
+ - (void)dealloc
+ {
+ if (tabBar)
+ [tabBar release];
+ 
+ if (toolBar)
+ {
+ [toolBarTitle release];
+ [toolBarItems release];
+ [toolBar release];
+ }
+ 
+ [super dealloc];
+ }
+ */
 
 - (void)pluginInitialize
 {
@@ -77,7 +78,7 @@
     tabBar.barTintColor = [UIColor colorWithRed:0.122 green:0.122 blue:0.122 alpha:1]; /*#1f1f1f*/
     tabBar.tintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1]; /*#ffffff*/
   } else {
-    
+    // Pre iOS 7
     tabBar.opaque = YES;
   }
 	tabBar.multipleTouchEnabled   = NO;
@@ -98,7 +99,7 @@
   
   /*
    This method might not need to return a result
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
    */
 }
 
@@ -112,8 +113,11 @@
  */
 - (void)showTabBar:(CDVInvokedUrlCommand*)command
 {
+  
+  NSDictionary *options = [command.arguments objectAtIndex:0];
+  
   if (!tabBar)
-    [self createTabBar:nil withDict:nil];
+    [self createTabBar:nil];
 	
 	// if we are calling this again when its shown, reset
 	if (!tabBar.hidden) {
@@ -189,12 +193,11 @@
 - (void)hideTabBar:(CDVInvokedUrlCommand*)command
 {
   if (!tabBar)
-    [self createTabBar:nil withDict:nil];
+    [self createTabBar:nil];
 	tabBar.hidden = YES;
   
 	NSNotification* notif = [NSNotification notificationWithName:@"CDVLayoutSubviewRemoved" object:tabBar];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:notif postingStyle: NSPostASAP];
-	
 	
 	[self.webView setFrame:originalWebViewBounds];
 }
@@ -228,8 +231,12 @@
  */
 - (void)createTabBarItem:(CDVInvokedUrlCommand*)command
 {
+  
+  NSArray *arguments = command.arguments;
+  NSDictionary *options = [arguments objectAtIndex:4];
+  
   if (!tabBar)
-    [self createTabBar:nil withDict:nil];
+    [self createTabBar:nil];
   
   NSString  *name      = [arguments objectAtIndex:0];
   NSString  *title     = [arguments objectAtIndex:1];
@@ -263,7 +270,6 @@
     item.badgeValue = [options objectForKey:@"badge"];
   
   [tabBarItems setObject:item forKey:name];
-	[item release];
 }
 
 
@@ -277,8 +283,12 @@
  */
 - (void)updateTabBarItem:(CDVInvokedUrlCommand*)command
 {
+  
+  NSArray *arguments = command.arguments;
+  NSDictionary *options = [arguments objectAtIndex:1];
+  
   if (!tabBar)
-    [self createTabBar:nil withDict:nil];
+    [self createTabBar:nil];
   
   NSString  *name = [arguments objectAtIndex:0];
   UITabBarItem *item = [tabBarItems objectForKey:name];
@@ -298,12 +308,16 @@
  */
 - (void)showTabBarItems:(CDVInvokedUrlCommand*)command
 {
-  if (!tabBar)
-    [self createTabBar:nil withDict:nil];
   
-  int i, count = [arguments count];
+  NSArray *arguments = command.arguments;
+  int count = [arguments count];
+  //NSDictionary *options = [arguments objectAtIndex:];
+  
+  if (!tabBar)
+    [self createTabBar:nil];
+  
   NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:count];
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     NSString *itemName = [arguments objectAtIndex:i];
     UITabBarItem *item = [tabBarItems objectForKey:itemName];
     if (item)
@@ -311,10 +325,11 @@
   }
   
   BOOL animateItems = NO;
-  if ([options objectForKey:@"animate"])
-    animateItems = [(NSString*)[options objectForKey:@"animate"] boolValue];
+  /*
+   if ([options objectForKey:@"animate"])
+   animateItems = [(NSString*)[options objectForKey:@"animate"] boolValue];
+   */
   [tabBar setItems:items animated:animateItems];
-	[items release];
 }
 
 /**
@@ -326,8 +341,10 @@
  */
 - (void)selectTabBarItem:(CDVInvokedUrlCommand*)command
 {
+  NSArray *arguments = command.arguments;
+  
   if (!tabBar)
-    [self createTabBar:nil withDict:nil];
+    [self createTabBar:nil];
   
   NSString *itemName = [arguments objectAtIndex:0];
   UITabBarItem *item = [tabBarItems objectForKey:itemName];
@@ -340,8 +357,10 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-  NSString * jsCallBack = [NSString stringWithFormat:@"window.plugins.nativeControls.tabBarItemSelected(%d);", item.tag];
-  [self.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+	// Create Plugin Result
+	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:item.tag];
+  
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
 }
 
 #pragma mark -
@@ -351,6 +370,9 @@
 /*********************************************************************************/
 - (void)createToolBar:(CDVInvokedUrlCommand*)command
 {
+  NSArray *arguments = command.arguments;
+  NSDictionary *options = [arguments objectAtIndex:0];
+  
   CGFloat height   = 45.0f;
   BOOL atTop       = YES;
 	UIBarStyle style = UIBarStyleBlack;
@@ -434,7 +456,7 @@
 - (void)hideToolBar:(CDVInvokedUrlCommand*)command
 {
   if (!toolBar)
-    [self createToolBar:nil withDict:nil];
+    [self createToolBar:nil];
   toolBar.hidden = YES;
 	
 	NSNotification* notif = [NSNotification notificationWithName:@"CDVLayoutSubviewRemoved" object:toolBar];
@@ -447,8 +469,10 @@
 
 - (void)setToolBarTitle:(CDVInvokedUrlCommand*)command
 {
+  NSArray *arguments = command.arguments;
+  
   if (!toolBar)
-    [self createToolBar:nil withDict:nil];
+    [self createToolBar:nil];
   
   NSString *title = [arguments objectAtIndex:0];
   
@@ -501,9 +525,11 @@
  */
 - (void)createToolBarItem:(CDVInvokedUrlCommand*)command
 {
+  NSArray *arguments = command.arguments;
+  
   if (!toolBar)
 	{
-    [self createToolBar:nil withDict:nil];
+    [self createToolBar:nil];
 	}
 	
 	if (!toolBarItems)
@@ -668,14 +694,13 @@
   
 	
   [toolBarItems insertObject:item atIndex:[tagId intValue]];
-	[item release];
 }
 
 - (void)showToolBar:(CDVInvokedUrlCommand*)command
 {
   if (!toolBar)
 	{
-    [self createToolBar:nil withDict:nil];
+    [self createToolBar:nil];
 	}
 	
 	[toolBar setItems:toolBarItems animated:NO];
@@ -702,6 +727,8 @@
 
 - (void)createActionSheet:(CDVInvokedUrlCommand*)command
 {
+  NSArray *arguments = command.arguments;
+  NSDictionary *options = [arguments objectAtIndex:0];
   
 	NSString* title = [options objectForKey:@"title"];
   
@@ -731,7 +758,6 @@
 	
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;//UIActionSheetStyleBlackOpaque;
   [actionSheet showInView:self.webView.superview];
-  [actionSheet release];
 	
 }
 

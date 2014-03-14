@@ -282,4 +282,4 @@ NativeControls.prototype.setStatusBarVisibilty = function ( bHide ) {
     exec( null, null, this.serviceName, "setHidden", [ bHide ] );
 }
 
-module.exports = NativeControls;
+module.exports = new NativeControls();

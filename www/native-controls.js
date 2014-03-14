@@ -110,11 +110,11 @@ NativeControls.prototype.updateTabBarItem = function ( name, options ) {
  * @see createTabBar
  */
 NativeControls.prototype.showTabBarItems = function () {
-    var parameters = [];
+    var argv = [];
     for ( var i = 0; i < arguments.length; i++ ) {
-        parameters.push( arguments[i] );
+        argv.push( arguments[i] );
     }
-    exec( null, null, this.serviceName, "showTabBarItems", [ parameters ] );
+    exec( null, null, this.serviceName, "showTabBarItems", argv );
 };
 
 

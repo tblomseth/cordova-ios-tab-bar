@@ -68,7 +68,7 @@
 - (void)createTabBar:(CDVInvokedUrlCommand*)command
 {
 	tabBar = [UITabBar new];
-	tabBar.autoresizingMask =  UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+	tabBar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 	[tabBar sizeToFit];
 	tabBar.delegate = self;
   

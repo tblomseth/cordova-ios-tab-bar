@@ -20,35 +20,7 @@
 #endif
 
 @synthesize callbackId = _callbackId;
-
-/*
- -(CDVPlugin*) initWithWebView:(UIWebView*)theWebView
- {
- self = (NativeControls*)[super initWithWebView:theWebView];
- if (self)
- {
- tabBarItems = [[NSMutableDictionary alloc] initWithCapacity:5];
- originalWebViewBounds = theWebView.bounds;
- }
- return self;
- }
- */
-/*
- - (void)dealloc
- {
- if (tabBar)
- [tabBar release];
- 
- if (toolBar)
- {
- [toolBarTitle release];
- [toolBarItems release];
- [toolBar release];
- }
- 
- [super dealloc];
- }
- */
+@synthesize listenerCallbackId = _listenerCallbackId;
 
 - (void)pluginInitialize
 {
@@ -56,8 +28,21 @@
   originalWebViewBounds = self.webView.bounds;
 }
 
-#pragma mark -
-#pragma mark TabBar
+#pragma mark - Listener
+/**
+ * Bind listener for didSelectItem.
+ */
+-(void)bindListener:(CDVInvokedUrlCommand*) command{
+  NSLog(@"bindListener");
+  
+  self.listenerCallbackId = command.callbackId;
+  
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [pluginResult setKeepCallbackAsBool:true];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+#pragma mark - TabBar
 
 /**
  * Create a native tab bar at either the top or the bottom of the display.
@@ -360,7 +345,7 @@
 	// Create Plugin Result
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:item.tag];
   
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:self.listenerCallbackId];
 }
 
 #pragma mark -

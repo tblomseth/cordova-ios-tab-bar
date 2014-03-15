@@ -30,6 +30,10 @@
 #pragma mark - Properties
 
 @property (nonatomic, copy) NSString* callbackId;
+@property (nonatomic, copy) NSString* listenerCallbackId;
+
+#pragma mark - Listener
+- (void)bindListener:(CDVInvokedUrlCommand*)command;
 
 #pragma mark - Tab bar methods
 /* Tab Bar methods

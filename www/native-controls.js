@@ -26,6 +26,8 @@ function NativeControls() {
 
     this.tappedToolBarItem = null;
     this.selectedTabBarItem = null;
+
+    exec( this.tabBarItemSelected, function () {}, this.serviceName, 'bindListener', [] );
 }
 
 /**
@@ -97,7 +99,6 @@ NativeControls.prototype.createTabBarItem = function ( name, label, image, optio
  */
 NativeControls.prototype.updateTabBarItem = function ( name, options ) {
     if ( !options ) options = {};
-    cordova.exec( "NativeControls.", name, options );
     exec( null, null, this.serviceName, "updateTabBarItem", [ name, options ] );
 };
 

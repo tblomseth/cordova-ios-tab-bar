@@ -166,6 +166,9 @@
 	
 	
   [self.webView setFrame:webViewBounds];
+  
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 /**
@@ -184,6 +187,9 @@
 	[[NSNotificationQueue defaultQueue] enqueueNotification:notif postingStyle: NSPostASAP];
 	
 	[self.webView setFrame:originalWebViewBounds];
+
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 /**
@@ -250,10 +256,14 @@
     item = [[UITabBarItem alloc] initWithTitle:title image:[UIImage imageNamed:imageName] tag:tag];
   }
   
+  // Set badge if needed
   if ([options objectForKey:@"badge"])
     item.badgeValue = [options objectForKey:@"badge"];
   
   [tabBarItems setObject:item forKey:name];
+  
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 
@@ -278,6 +288,9 @@
   UITabBarItem *item = [tabBarItems objectForKey:name];
   if (item)
     item.badgeValue = [options objectForKey:@"badge"];
+  
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 
@@ -314,6 +327,9 @@
    animateItems = [(NSString*)[options objectForKey:@"animate"] boolValue];
    */
   [tabBar setItems:items animated:animateItems];
+  
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 /**
@@ -336,6 +352,9 @@
     tabBar.selectedItem = item;
   else
     tabBar.selectedItem = nil;
+  
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item

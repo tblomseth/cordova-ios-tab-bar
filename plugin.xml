@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="com.mymee.cordova.plugins.native-controls"
+        id="com.mymee.cordova.plugins.ios-tab-bar"
         version="1.0.0">
 
-    <name>Native Controls Plugin for Cordova iOS</name>
-    <description>This plugin allows your app access to some native iOS UI controls from Cordova</description>
+    <name>Tab Bar Plugin for Cordova iOS</name>
+    <description>This Cordova plugin provides your app with access to configurable, native iOS tab bar</description>
     <license>MIT</license>
     <keywords>native ui controls</keywords>
 
@@ -15,18 +15,18 @@
     <!-- ios -->
     <platform name="ios">
 
-        <js-module src="www/native-controls.js" name="NativeControls">
-            <clobbers target="window.plugins.NativeControls"/>
+        <js-module src="www/tab-bar.js" name="TabBar">
+            <clobbers target="window.TabBar"/>
         </js-module>
 
         <config-file target="config.xml" parent="/widget">
-            <feature name="NativeControls">
-                <param name="ios-package" value="NativeControls"/>
+            <feature name="TabBar">
+                <param name="ios-package" value="TabBar"/>
             </feature>
         </config-file>
 
-        <header-file src="src/ios/NativeControls.h"/>
-        <source-file src="src/ios/NativeControls.m"/>
+        <header-file src="src/ios/CDVTabBar.h"/>
+        <source-file src="src/ios/CDVTabBar.m"/>
 
     </platform>
 

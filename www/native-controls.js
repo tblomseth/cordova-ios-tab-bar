@@ -16,6 +16,7 @@ var exec = require( 'cordova/exec' );
  * @constructor
  */
 function NativeControls() {
+    var self = this;
     this.serviceName = 'NativeControls';
 
     this.tabBarTag = 0;
@@ -27,7 +28,7 @@ function NativeControls() {
     this.tappedToolBarItem = null;
     this.selectedTabBarItem = null;
 
-    exec( this.tabBarItemSelected, function () {}, this.serviceName, 'bindListener', [] );
+    exec( function ( tab ) { self.tabBarItemSelected( tab ); }, function () {}, this.serviceName, 'bindListener', [] );
 }
 
 /**

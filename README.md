@@ -1,4 +1,4 @@
-NativeControls
-==============
+Cordova iOS Tab Bar
+===================
 
-Port of NativeControls Cordova/PhoneGap plugin to Cordova 3
+Cordova/PhoneGap iOS tab bar plugin for Cordova 3. Based on NativeControls.

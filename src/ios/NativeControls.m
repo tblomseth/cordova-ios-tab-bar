@@ -339,12 +339,11 @@
     tabBar.selectedItem = nil;
 }
 
-
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
 	// Create Plugin Result
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:item.tag];
-  
+  [pluginResult setKeepCallbackAsBool:true];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:self.listenerCallbackId];
 }
 

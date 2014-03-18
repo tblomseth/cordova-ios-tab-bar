@@ -1,8 +1,8 @@
 {
-  "name": "NativeControls",
+  "name": "cordova-ios-tab-bar",
   "version": "0.1.0",
-  "description": "Native Controls Plugin for Cordova iOS",
-  "main": "index.js",
+  "description": "Cordova >=3 iOS Tab Bar plugin",
+  "main": "",
   "directories": {
     "example": "example"
   },
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tblomseth/NativeControls.git"
+    "url": "https://github.com/tblomseth/cordova-ios-tab-bar.git"
   },
   "keywords": [
     "Cordova",
@@ -19,12 +19,12 @@
     "plugin",
     "native",
     "ui",
-    "controls"
+    "tab bar"
   ],
-  "author": "",
+  "author": "tblomseth",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tblomseth/NativeControls/issues"
+    "url": "https://github.com/tblomseth/cordova-ios-tab-bar/issues"
   },
-  "homepage": "https://github.com/tblomseth/NativeControls"
+  "homepage": "https://github.com/tblomseth/cordova-ios-tab-bar"
 }

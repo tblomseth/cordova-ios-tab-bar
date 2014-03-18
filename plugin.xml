@@ -21,7 +21,7 @@
 
         <config-file target="config.xml" parent="/widget">
             <feature name="TabBar">
-                <param name="ios-package" value="TabBar"/>
+                <param name="ios-package" value="CDVTabBar"/>
             </feature>
         </config-file>
 

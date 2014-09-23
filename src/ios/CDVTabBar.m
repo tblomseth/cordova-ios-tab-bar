@@ -118,14 +118,17 @@
     height   = [[options objectForKey:@"height"] floatValue];
     atBottom = [[options objectForKey:@"position"] isEqualToString:@"bottom"];
   }
-	if(height == 0)
+	if (height == 0)
 	{
-		height = 49.0f;
-		atBottom = YES;
+      height = 49.0f;
+      atBottom = YES;
 	}
 	
   tabBar.hidden = NO;
   CGRect webViewBounds = originalWebViewBounds;
+  if ( SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+    webViewBounds.origin.y += 20;
+  }
   CGRect tabBarBounds;
 	
 	NSNotification* notif = [NSNotification notificationWithName:@"CDVLayoutSubviewAdded" object:tabBar];
@@ -185,8 +188,13 @@
   
 	NSNotification* notif = [NSNotification notificationWithName:@"CDVLayoutSubviewRemoved" object:tabBar];
 	[[NSNotificationQueue defaultQueue] enqueueNotification:notif postingStyle: NSPostASAP];
-	
-	[self.webView setFrame:originalWebViewBounds];
+
+  CGRect webViewBounds = originalWebViewBounds;
+  if ( SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+    webViewBounds.origin.y += 20;
+  }
+  
+	[self.webView setFrame:webViewBounds];
 
   CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
